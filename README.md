@@ -19,3 +19,5 @@ Testing
 Flowchart
 
 Authors
+Jason JEAN-LOUIS <12315@holbertonstudents.com>
+Farid GHAIB <12190@holbertonstudents.com>
