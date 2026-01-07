@@ -18,7 +18,7 @@ void execute_prog(char **args) {
 
     if (args == NULL || args[0] == NULL)
         return;
-    /* Decide if using the command or search th PATH */
+    /* Decide if using the command or search the PATH */
     if (args[0][0] == '/')
         actual_command = strdup(args[0]);
     else
