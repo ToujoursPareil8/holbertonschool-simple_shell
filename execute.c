@@ -12,27 +12,38 @@
 void execute_prog(char **args) {
     pid_t pid;
     int status;
+    char *actual_command;
+    extern char **environ;
+    
 
     if (args == NULL || args[0] == NULL)
         return;
+    /* Decide if using the command or search th PATH */
+    if (args[0][0] == '/')
+        actual_command = strdup(args[0]);
+    else
+        actual_command = get_path(args[0]);
+    
+    if (actual_command == NULL) 
+    {
+        perror("shell");
+        return;
+    }
 
     pid = fork();
     if (pid == 0) 
     {
         /* Child process */
-        if (execvp(args[0], args) == -1) {
+        if (execve(actual_command, args, environ) == -1)
+        {
             perror("shell");
         }
+        free(actual_command);
         exit(EXIT_FAILURE);
     } 
     else if (pid < 0) 
     {
-        /* Forking error */
-        perror("shell");
-    } 
-    else 
-    {
-        /* Parent process */
         waitpid(pid, &status, 0);
-    }
+    } 
+    free(actual_command);
 }
