@@ -7,7 +7,7 @@ int main(void)
 {
     char *line = NULL;
     size_t len = 0;
-    char *args[64];
+    char *args[64] = {NULL};
     ssize_t nread;
 
     while (1)
@@ -30,6 +30,8 @@ int main(void)
         }
         
         split_line(line, args);
+        if (check_builtins(args, line))
+            continue;
         if (args[0] != NULL)
             execute_prog(args);
         
