@@ -13,18 +13,20 @@
 void split_line(char *line, char **args) {
     char *token;
     int position = 0;
+
     /* Get the first word while ignoring whitespace */
     token = strtok(line, " \t\r\n\a");
 
     while (token != NULL && position < 63) 
     {
         args[position++] = token;
-        position++;
-
         /* Move to next token */
         token = strtok(NULL, " \t\r\n\a");
     }
 
     /*Last element must always be NULL for execve */
-    args[position] = NULL;
+    while (position < 64)
+    {
+        args[position++] = NULL;
+    }
 }
