@@ -14,6 +14,6 @@ extern char **environ;
 void split_line(char *line, char **args);
 void execute_prog(char **args);
 char *get_path(char *command);
-int check_builtins(char **args, char *line)
+int check_builtins(char **args, char *line);
 
 #endif /* SHELL_H */
