@@ -2,26 +2,23 @@
 
 /**
  * execute_prog - Creates a child process to execute a command
- * @args: An array of strings representing the command and its arguments
+ * @args: Array of strings representing the command and arguments
+ * @cnt: The loop counter for error reporting
  *
  * Return: void
  */
-void execute_prog(char **args)
+void execute_prog(char **args, int cnt)
 {
 	pid_t pid;
 	int status;
 	char *actual_command;
 	extern char **environ;
 
-	if (args == NULL || args[0] == NULL)
-		return;
-
-	/* find_path uses your _getenv to locate the binary in PATH */
 	actual_command = find_path(args[0]);
-
-	if (actual_command == NULL)
+	if (!actual_command)
 	{
-		fprintf(stderr, "./hsh: 1: %s: not found\n", args[0]);
+		/* Exact format required by Holberton checker */
+		fprintf(stderr, "./hsh: %d: %s: not found\n", cnt, args[0]);
 		return;
 	}
 
@@ -35,17 +32,15 @@ void execute_prog(char **args)
 
 	if (pid == 0)
 	{
-		/* Child process: execute the command */
 		if (execve(actual_command, args, environ) == -1)
 		{
-			perror(args[0]);
+			perror("execve");
 			free(actual_command);
-			exit(EXIT_FAILURE);
+			exit(2);
 		}
 	}
 	else
 	{
-		/* Parent process: wait for child and then free memory */
 		waitpid(pid, &status, 0);
 		free(actual_command);
 	}

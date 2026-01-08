@@ -1,40 +1,44 @@
 #include "shell.h"
 
-int main(void) 
+/**
+ * main - Entry point for the simple shell
+ *
+ * Return: 0 on success
+ */
+int main(void)
 {
 	char *line = NULL;
 	size_t len = 0;
-	char *args[64] = {NULL};
+	char *args[64];
 	ssize_t nread;
+	int counter = 0;
 
 	while (1)
 	{
-		/* Print prompt if running in interactive mode */
+		counter++;
 		if (isatty(STDIN_FILENO))
-			printf("$ > ");
+			printf("$ ");
 
 		nread = getline(&line, &len, stdin);
-
-		/* Check for end-of-file (CTRL+D) or error */
-		if (nread == -1) 
+		if (nread == -1)
 		{
+			if (isatty(STDIN_FILENO))
+				printf("\n");
 			free(line);
-			exit(EXIT_SUCCESS);
+			exit(0);
 		}
 
-		/* Remove trailing newline character */
-		if (nread > 0 && line[nread - 1] == '\n') 
+		if (line[nread - 1] == '\n')
 			line[nread - 1] = '\0';
 
 		split_line(line, args);
 		if (args[0] == NULL)
 			continue;
 
-		/* On vérifie les built-ins (exit, env) */
 		if (check_builtins(args, line))
 			continue;
-		/* Exécution des commandes externes */
-		execute_prog(args);
+
+		execute_prog(args, counter);
 	}
 	free(line);
 	return (0);
