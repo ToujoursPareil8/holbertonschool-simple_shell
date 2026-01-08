@@ -1,49 +1,47 @@
 #include "shell.h"
 
 /**
- * execute_prog - Creates a child process to execute a command.
- * @args: An array of strings representing the command and its arguments.
+ * execute_prog - Creates a child process to execute a command
+ * @args: Array of strings representing the command and arguments
+ * @cnt: The loop counter for error reporting
  *
- * Description: This function forks a new process. The child process
- * attempts to execute the command, while the parent waits for its
- * completion.
+ * Return: void
  */
-
-void execute_prog(char **args) {
+void execute_prog(char **args, int cnt)
+{
 	pid_t pid;
 	int status;
 	char *actual_command;
 	extern char **environ;
-	
 
-	if (args == NULL || args[0] == NULL)
-		return;
-	/* Decide if using the command or search the PATH */
-	if (args[0][0] == '/')
-		actual_command = strdup(args[0]);
-	else
-		actual_command = get_path(args[0]);
-	
-	if (actual_command == NULL) 
+	actual_command = find_path(args[0]);
+	if (!actual_command)
 	{
-		perror("shell");
+		/* Exact format required by Holberton checker */
+		fprintf(stderr, "./hsh: %d: %s: not found\n", cnt, args[0]);
 		return;
 	}
 
 	pid = fork();
-	if (pid == 0) 
+	if (pid == -1)
 	{
-		/* Child process */
+		perror("fork");
+		free(actual_command);
+		return;
+	}
+
+	if (pid == 0)
+	{
 		if (execve(actual_command, args, environ) == -1)
 		{
-			perror("shell");
+			perror("execve");
+			free(actual_command);
+			exit(2);
 		}
-		free(actual_command);
-		exit(EXIT_FAILURE);
-	} 
-	else if (pid > 0) 
+	}
+	else
 	{
 		waitpid(pid, &status, 0);
-	} 
-	free(actual_command);
+		free(actual_command);
+	}
 }
