@@ -11,22 +11,22 @@
  * and newlines as delimiters.
  */
 void split_line(char *line, char **args) {
-    char *token;
-    int position = 0;
+	char *token;
+	int position = 0;
 
-    /* Get the first word while ignoring whitespace */
-    token = strtok(line, " \t\r\n\a");
+	/* Get the first word while ignoring whitespace */
+	token = strtok(line, " \t\r\n\a");
 
-    while (token != NULL && position < 63) 
-    {
-        args[position++] = token;
-        /* Move to next token */
-        token = strtok(NULL, " \t\r\n\a");
-    }
+	while (token != NULL && position < 63) 
+	{
+		args[position++] = token;
+		/* Move to next token */
+		token = strtok(NULL, " \t\r\n\a");
+	}
 
-    /*Last element must always be NULL for execve */
-    while (position < 64)
-    {
-        args[position++] = NULL;
-    }
+	/*Last element must always be NULL for execve */
+	while (position < 64)
+	{
+		args[position++] = NULL;
+	}
 }
