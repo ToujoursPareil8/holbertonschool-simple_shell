@@ -1,48 +1,72 @@
 #include "shell.h"
 
 /**
- * get_path - Finds the full path of a command.
- * @command: The command to find.
- * 
- * Return: Full path of the command if found, NULL otherwise.
+ * _getenv - Trouve une variable d'environnement sans utiliser la fonction lib
+ * @name: Nom de la variable à chercher
+ * Return: Pointeur vers le début de la valeur, ou NULL
  */
+char *_getenv(const char *name)
+{
+    char **env;
+    size_t name_len = strlen(name);
 
- char *get_path(char *command)
- {
-    char *path = getenv("PATH");
-    char *path_copy, * token ,*full_path;
-    struct stat st;
-
-    if (path == NULL)
+    for (env = environ; *env != NULL; env++)
     {
-        return NULL;
+        /* On compare le nom ET on vérifie que le caractère suivant est '=' */
+        if (strncmp(*env, name, name_len) == 0 && (*env)[name_len] == '=')
+        {
+            return (*env + name_len + 1);
+        }
     }
+    return (NULL);
+}
 
-    /*Duplica path because strtok modifies str*/
+/**
+ * find_path - Localise l'exécutable d'une commande dans le PATH
+ * @cmd: Nom de la commande (ex: "ls")
+ * Return: Chemin complet alloué dynamiquement, ou NULL
+ */
+char *find_path(char *cmd)
+{
+    char *path = _getenv("PATH");
+    char *path_copy, *dir, *full_path;
+    struct stat st;
+    size_t path_len;
+
+    /* Cas 1 : La commande est déjà un chemin (contient '/') */
+    if (strchr(cmd, '/') && stat(cmd, &st) == 0)
+        return (strdup(cmd));
+
+    if (!path || !*path)
+        return (NULL);
+
     path_copy = strdup(path);
-    token = strtok(path_copy, ":");
+    dir = strtok(path_copy, ":");
 
-    while (token != NULL)
+    while (dir)
     {
-        /* malloc : length of dir + '/' + command  + '\0' */
-        full_path = malloc(strlen(token) + strlen(command) +2);
-        if (full_path == NULL)
+        /* Calcul de la taille : dossier + / + commande + \0 */
+        path_len = strlen(dir) + strlen(cmd) + 2;
+        full_path = malloc(path_len);
+        if (!full_path)
             break;
 
-        /* Construct full path */
-        strcpy(full_path, token);
+        /* Construction du chemin sans sprintf */
+        strcpy(full_path, dir);
         strcat(full_path, "/");
-        strcat(full_path, command);
+        strcat(full_path, cmd);
 
-        /*Check if file exists and executable*/
+        /* Vérification de l'existence du fichier */
         if (stat(full_path, &st) == 0)
         {
             free(path_copy);
-            return full_path;
+            return (full_path);
         }
+
         free(full_path);
-        token = strtok(NULL, ":");
+        dir = strtok(NULL, ":");
     }
+
     free(path_copy);
-    return NULL;
+    return (NULL);
 }
