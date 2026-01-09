@@ -1,27 +1,77 @@
+.TH HSH 1 "JANUARY 2026" "ALX/Holberton" "Simple Shell Manual"
 .SH NAME
-
+hsh \- a simple UNIX command line interpreter
 .SH SYNOPSIS
-
-.SH COPYRIGHT
-
+.B ./hsh
+[batch_file]
 .SH DESCRIPTION
+.B hsh
+is a command language interpreter that executes commands read from the standard input or from a file. It is a simplified version of the Bourne Shell (sh).
+.PP
+The shell can be used in both interactive and non-interactive modes:
+.IP \(bu 2
+In
+.B interactive mode
+, hsh displays a prompt ($ ) and waits for the user to type a command.
+.IP \(bu 2
+In
+.B non-interactive mode
+, hsh reads commands from a pipe or redirected file and executes them sequentially.
 
-.SH OPTIONS
+.SH FEATURES
+.SS Command Execution
+The shell searches for commands in the following order:
+.IP 1. 4
+If the command name contains a slash (/), the shell attempts to execute the file directly.
+.IP 2. 4
+If the command does not contain a slash, the shell searches each directory listed in the
+.B PATH
+environment variable for the executable.
 
-.SH ARGUMENTS
+.SS Environment
+.B hsh
+uses its own internal
+.B _getenv
+function to access environment variables like PATH, ensuring it operates independently of standard library environment functions.
 
-.SH INVOCATION
+.SH BUILT-IN COMMANDS
+The following commands are built into the shell:
+.TP
+.B env
+Prints the current environment variables to the standard output.
+.TP
+.B exit
+Exits the shell.
 
-.SH RESERVED WORDS
+.SH ERROR HANDLING
+When a command is not found,
+.B hsh
+prints an error message to
+.I stderr
+in the following format:
+.IP
+\fB./hsh: [line_counter]: [command]: not found\fR
 
-.SH HISTORY
+.SH EXIT STATUS
+Returns 0 on success. If a command is not found, it returns the status of the last command executed or specific error codes (e.g., 127 for command not found).
 
-.SH SHELL BUILTIN COMMANDS
+.SH EXAMPLES
+To start the shell in interactive mode:
+.IP
+.B ./hsh
+.PP
+To execute a command via pipe:
+.IP
+.B echo "ls -l" | ./hsh
 
-.SH SEE ALSO
+.SH AUTHOR
+Written by your name and Gemini AI for the ALX/Holberton Simple Shell project.
 
 .SH BUGS
+Does not currently support advanced shell features like pipes (|), redirections (>, <), or logical operators (&&, ||).
 
-.SH AUTHORS
+.SH SEE ALSO
+sh(1), bash(1), execve(2), fork(2), wait(2)
+
 Jason JEAN-LOUIS
 Farid GHAIB
