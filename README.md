@@ -149,6 +149,7 @@ sh(1), bash(1), execve(2), fork(2), wait(2)
 Testing
 <img width="1222" height="193" alt="test_simplehell" src="https://github.com/user-attachments/assets/77824b22-db22-4cd0-bd34-13eb106847a7" />
 Flowchart
+<img width="4670" height="8192" alt="Untitled diagram-2026-01-09-193902" src="https://github.com/user-attachments/assets/b0f92019-47aa-46b5-8de3-508a078be7bc" />
 
 Authors
 Jason JEAN-LOUIS <12315@holbertonstudents.com>
