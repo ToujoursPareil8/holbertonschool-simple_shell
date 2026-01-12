@@ -1,4 +1,4 @@
-.TH HSH 1 "JANUARY 2026" "ALX/Holberton" "Simple Shell Manual"
+.TH HSH 1 "JANUARY 2026" "Holberton" "Simple Shell Manual"
 .SH NAME
 hsh \- a simple UNIX command line interpreter
 .SH SYNOPSIS
@@ -63,9 +63,6 @@ To start the shell in interactive mode:
 To execute a command via pipe:
 .IP
 .B echo "ls -l" | ./hsh
-
-.SH AUTHOR
-Written by your name and Gemini AI for the ALX/Holberton Simple Shell project.
 
 .SH BUGS
 Does not currently support advanced shell features like pipes (|), redirections (>, <), or logical operators (&&, ||).
