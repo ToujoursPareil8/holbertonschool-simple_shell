@@ -17,7 +17,6 @@ void execute_prog(char **args, int cnt)
 	actual_command = find_path(args[0]);
 	if (!actual_command)
 	{
-		/* Exact format required by Holberton checker */
 		fprintf(stderr, "./hsh: %d: %s: not found\n", cnt, args[0]);
 		return;
 	}
