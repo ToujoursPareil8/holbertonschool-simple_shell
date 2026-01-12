@@ -31,7 +31,7 @@ char *find_path(char *cmd)
 	char *path_copy, *dir, *full_path;
 	struct stat st;
 	size_t path_len;
-	
+
 	if (strchr(cmd, '/') && stat(cmd, &st) == 0)
 		return (strdup(cmd));
 
