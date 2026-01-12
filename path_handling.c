@@ -12,7 +12,7 @@ char *_getenv(const char *name)
 
 	for (env = environ; *env != NULL; env++)
 	{
-		/* On compare le nom ET on vérifie que le caractère suivant est '=' */
+		
 		if (strncmp(*env, name, name_len) == 0 && (*env)[name_len] == '=')
 		{
 			return (*env + name_len + 1);
@@ -33,7 +33,7 @@ char *find_path(char *cmd)
 	struct stat st;
 	size_t path_len;
 
-	/* Case 1 : cmd already has a path (contains '/') */
+	
 	if (strchr(cmd, '/') && stat(cmd, &st) == 0)
 		return (strdup(cmd));
 
@@ -45,13 +45,13 @@ char *find_path(char *cmd)
 
 	while (dir)
 	{
-		/* Size calculation : directory + / + cmd + \0 */
+		
 		path_len = strlen(dir) + strlen(cmd) + 2;
 		full_path = malloc(path_len);
 		if (!full_path)
 			break;
 
-		/* Construction of path without sprintf */
+		
 		strcpy(full_path, dir);
 		strcat(full_path, "/");
 		strcat(full_path, cmd);
