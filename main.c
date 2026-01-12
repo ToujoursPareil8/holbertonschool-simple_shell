@@ -41,5 +41,5 @@ int main(void)
 		execute_prog(args, counter);
 	}
 	free(line);
-	return (0);
+	return (last_status);
 }
