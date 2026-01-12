@@ -1,9 +1,9 @@
 #include "shell.h"
 
 /**
- * _getenv - Trouve une variable d'environnement sans utiliser la fonction lib
- * @name: Nom de la variable à chercher
- * Return: Pointeur vers le début de la valeur, ou NULL
+ * _getenv - Finds an environment variable  without using the lib function
+ * @name: Name of the variable to find
+ * Return: Pointer to the start of the value or NULL
  */
 char *_getenv(const char *name)
 {
@@ -22,9 +22,9 @@ char *_getenv(const char *name)
 }
 
 /**
- * find_path - Localise l'exécutable d'une commande dans le PATH
- * @cmd: Nom de la commande (ex: "ls")
- * Return: Chemin complet alloué dynamiquement, ou NULL
+ * find_path - Localize the exe of a command in the PATH
+ * @cmd: Name of a command (ex: "ls")
+ * Return: Full path allocated dynamically or NULL
  */
 char *find_path(char *cmd)
 {
@@ -33,7 +33,7 @@ char *find_path(char *cmd)
 	struct stat st;
 	size_t path_len;
 
-	/* Cas 1 : La commande est déjà un chemin (contient '/') */
+	/* Case 1 : cmd already has a path (contains '/') */
 	if (strchr(cmd, '/') && stat(cmd, &st) == 0)
 		return (strdup(cmd));
 
@@ -45,18 +45,18 @@ char *find_path(char *cmd)
 
 	while (dir)
 	{
-		/* Calcul de la taille : dossier + / + commande + \0 */
+		/* Size calculation : directory + / + cmd + \0 */
 		path_len = strlen(dir) + strlen(cmd) + 2;
 		full_path = malloc(path_len);
 		if (!full_path)
 			break;
 
-		/* Construction du chemin sans sprintf */
+		/* Construction of path without sprintf */
 		strcpy(full_path, dir);
 		strcat(full_path, "/");
 		strcat(full_path, cmd);
 
-		/* Vérification de l'existence du fichier */
+		/* Check if file exists */
 		if (stat(full_path, &st) == 0)
 		{
 			free(path_copy);
