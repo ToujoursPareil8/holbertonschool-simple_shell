@@ -31,23 +31,15 @@ void execute_prog(char **args, int cnt)
 	if (pid == 0)
 	{
 		if (execve(actual_command, args, environ) == -1)
-			if (errno == ENOENT)
 		{
-		fprintf(stderr, "./hsh: %d: %s: not found\n",
-				line_number, argv[0]);
-		exit(127);
-		}
-		else
-		{
-			perror("hsh");
-			exit(126);
+			perror("execve");
+			free(actual_command);
+			exit(2);
 		}
 	}
 	else
 	{
 		waitpid(pid, &status, 0);
-		if (WIFEXITED(status))
-			last_status = WEXITSTATUS(status);
 		free(actual_command);
 	}
 }
