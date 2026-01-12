@@ -12,7 +12,6 @@ void execute_prog(char **args, int cnt)
 	pid_t pid;
 	int status;
 	char *actual_command;
-	extern char **environ;
 
 	actual_command = find_path(args[0]);
 	if (!actual_command)
