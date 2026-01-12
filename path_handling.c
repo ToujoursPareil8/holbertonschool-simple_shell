@@ -33,7 +33,6 @@ char *find_path(char *cmd)
 	struct stat st;
 	size_t path_len;
 
-	/* Cas 1 : La commande est déjà un chemin (contient '/') */
 	if (strchr(cmd, '/') && stat(cmd, &st) == 0)
 		return (strdup(cmd));
 
@@ -45,18 +44,18 @@ char *find_path(char *cmd)
 
 	while (dir)
 	{
-		/* Calcul de la taille : dossier + / + commande + \0 */
+		
 		path_len = strlen(dir) + strlen(cmd) + 2;
 		full_path = malloc(path_len);
 		if (!full_path)
 			break;
 
-		/* Construction du chemin sans sprintf */
+		
 		strcpy(full_path, dir);
 		strcat(full_path, "/");
 		strcat(full_path, cmd);
 
-		/* Vérification de l'existence du fichier */
+		
 		if (stat(full_path, &st) == 0)
 		{
 			free(path_copy);
