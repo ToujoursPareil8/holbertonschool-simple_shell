@@ -12,7 +12,6 @@ char *_getenv(const char *name)
 
 	for (env = environ; *env != NULL; env++)
 	{
-		
 		if (strncmp(*env, name, name_len) == 0 && (*env)[name_len] == '=')
 		{
 			return (*env + name_len + 1);
@@ -44,13 +43,11 @@ char *find_path(char *cmd)
 
 	while (dir)
 	{
-		
 		path_len = strlen(dir) + strlen(cmd) + 2;
 		full_path = malloc(path_len);
 		if (!full_path)
 			break;
 
-		
 		strcpy(full_path, dir);
 		strcat(full_path, "/");
 		strcat(full_path, cmd);
